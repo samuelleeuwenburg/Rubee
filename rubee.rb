@@ -8,7 +8,7 @@ Dir[File.dirname(__FILE__)+"/plugins/*.rb"].each {|file| require file}
 bot = Cinch::Bot.new do
 	configure do |c|
 
-		file = File.read("rubee.json")
+		file = File.read("settings.json")
 		rubee_data = JSON.parse(file)
 
 		c.server = rubee_data["server"] 

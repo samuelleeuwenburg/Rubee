@@ -4,7 +4,7 @@ require "json"
 class Social
 	include Cinch::Plugin
 
-	file = File.read("rubee.json")
+	file = File.read("settings.json")
 	rubee_data = JSON.parse(file)
 
 	nick = rubee_data["nick"]
