@@ -8,8 +8,7 @@ class Dictionary
 	include Cinch::Plugin	
 
 	match(/^.u (.+)/, method: :urban_dict, use_prefix: false)
-	def urban_dict(m)
-		query = m.message[3..-1]
+	def urban_dict(m, query)
 		
 		url = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
 		definition =  Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')

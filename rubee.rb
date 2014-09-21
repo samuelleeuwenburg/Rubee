@@ -21,7 +21,8 @@ bot = Cinch::Bot.new do
 			Social,
 			TinyURL,
 			Google,
-			Dictionary
+			Dictionary,
+			Karma
 		]
 		
 		c.plugins.options[Cinch::Plugins::Identify] = {

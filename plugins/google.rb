@@ -7,8 +7,7 @@ class Google
 	include Cinch::Plugin
 
 	match(/^.g (.+)/, method: :search, use_prefix: false)
-	def search(m)
-		query = m.message[3..-1]
+	def search(m, query)
 
 		url = "http://www.google.com/search?q=#{CGI.escape(query)}"
 		res = Nokogiri.parse(open(url).read).at("h3.r")
@@ -23,5 +22,3 @@ class Google
 		m.reply link[7..-1]
 	end
 end
-
-p
