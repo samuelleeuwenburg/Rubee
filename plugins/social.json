@@ -1,0 +1,25 @@
+[
+	{
+		"matches": [
+			"hi, {{nick}}",
+			"hey {{nick}}",
+			"yo {{nick}}",
+			"hoi {{nick}}"
+		],
+		"responses": [
+			"Hi {{sender}}",
+			"Hello {{sender}}"
+		]
+	},
+	{
+		"matches": [
+			":)",
+			":D"
+		],
+		"responses": [
+			":D",
+			":)"
+		],
+		"odds": 4
+	}
+]
