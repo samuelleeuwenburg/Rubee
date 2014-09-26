@@ -1,5 +1,6 @@
 require "cinch"
 require "json"
+require "cleverbot-api"
 
 class Social
 	include Cinch::Plugin
@@ -34,9 +35,14 @@ class Social
 						end
 					end
 
-					# choose random reply
-					rand = Random.rand(matches["responses"].length)
-					reply = matches["responses"][rand]		
+					# cointoss: random reply or cleverbot reply
+					if Random.rand(2) == 0
+						rand = Random.rand(matches["responses"].length)
+						reply = matches["responses"][rand]		
+					else
+						bot = CleverBot.new 
+						reply = bot.think message
+					end
 
 					#prepare reply
 					if reply.include? "{{sender}}"
