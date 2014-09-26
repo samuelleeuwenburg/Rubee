@@ -61,7 +61,7 @@ class Social
 
 		# no reply found 
 		# if it contains our nickname, cleverbot reply anyway
-		if message.include? nick
+		if message.downcase.include? nick.downcase
 			bot = CleverBot.new 
 			reply = bot.think message
 
