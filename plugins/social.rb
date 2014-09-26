@@ -59,6 +59,15 @@ class Social
 			end
 		end
 
+		# no reply found 
+		# if it contains our nickname, cleverbot reply anyway
+		if message.include? nick
+			bot = CleverBot.new 
+			reply = bot.think message
+
+			m.reply reply
+		end
+
 	end
 
 end
