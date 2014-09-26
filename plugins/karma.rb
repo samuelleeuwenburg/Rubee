@@ -3,7 +3,7 @@ require "sequel"
 
 class Karma 
 	include Cinch::Plugin
-	DB = Sequel.connect("sqlite://rubee.db")
+	DB = Sequel.connect("sqlite://"+File.dirname(__FILE__)+"/rubee.db")
 
 	def renderKarma(nick)
 		nicks = DB[:karma]
