@@ -5,7 +5,7 @@ require "cleverbot-api"
 class Social
 	include Cinch::Plugin
 
-	match(/^([^.!?].*)$/i, method: :handle_match, use_prefix: false)
+	match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
 	def handle_match(m, message)
 		file = File.read(File.dirname(__FILE__)+"/../settings.json")
 		rubee_data = JSON.parse(file)
