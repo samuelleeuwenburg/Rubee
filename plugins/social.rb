@@ -6,11 +6,11 @@ class Social
 
 	match(/^([^.!?].*)$/i, method: :handle_match, use_prefix: false)
 	def handle_match(m, message)
-		file = File.read(File.dirname(__FILE__)"/../settings.json")
+		file = File.read(File.dirname(__FILE__)+"/../settings.json")
 		rubee_data = JSON.parse(file)
 		nick = rubee_data["nick"]
 
-		file = File.read(File.dirname(__FILE__)"/social.json")
+		file = File.read(File.dirname(__FILE__)+"/social.json")
 		responses = JSON.parse(file)
 
 		for matches in responses
