@@ -6,7 +6,7 @@ require 'cgi'
 class Google
 	include Cinch::Plugin
 
-	match(/^\.g (.+)/, method: :search, use_prefix: false)
+	match(/^\.g (.+)/i, method: :search, use_prefix: false)
 	def search(m, query)
 
 		url = "http://www.google.com/search?q=#{CGI.escape(query)}"

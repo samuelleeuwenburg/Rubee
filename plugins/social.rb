@@ -41,7 +41,7 @@ class Social
 						reply = matches["responses"][rand]		
 					else
 						bot = CleverBot.new 
-						reply = bot.think message.gsub! nick, ""
+						reply = bot.think message.gsub! /#{nick}/i, ""
 					end
 
 					#prepare reply
@@ -63,7 +63,7 @@ class Social
 		# if it contains our nickname, cleverbot reply anyway
 		if message.downcase.include? nick.downcase
 			bot = CleverBot.new 
-			reply = bot.think message.gsub! nick, ""
+			reply = bot.think message.gsub! /#{nick}/i, ""
 
 			m.reply reply
 		end

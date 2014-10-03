@@ -26,7 +26,7 @@ class Karma
 		end	
 	end
 
-	match(/^\.k (\w+)$/, method: :getKarma, use_prefix: false)
+	match(/^\.k (\w+)$/i, method: :getKarma, use_prefix: false)
 	def getKarma(m, nick)
 		unless nickExists(nick)
 			addNick(nick)
