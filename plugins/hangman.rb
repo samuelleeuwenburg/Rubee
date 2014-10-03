@@ -1,4 +1,5 @@
 require 'cinch'
+require "sequel"
 
 class Hangman
 	include Cinch::Plugin
@@ -12,6 +13,8 @@ class Hangman
 		@render = nil
 		@tries = 10
 		@guessed = []
+		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+
 	end
 
 	def get_random_word()
@@ -97,9 +100,47 @@ class Hangman
 			return false
 		end
 
+		addKarma m
 		m.reply "Correct: #{@render}!"
 		reset_game()
 
 	end
+
+	def addKarma(m)
+		nicks = @DB[:karma]
+		nick = m.user.nick
+
+		unless nickExists(nick)
+			addNick(nick)
+		end
+		
+		n = nicks.where(:nick => nick.capitalize).first
+		k = n[:karma] + 1
+		nicks.where(:nick => nick.capitalize).update(:karma => k)
+
+		m.reply renderKarma(nick)
+	end
+
+	def renderKarma(nick)
+		nicks = @DB[:karma]
+		n = nicks.where(:nick => nick.capitalize).first
+		return "Karma for " + n[:nick] + " = " + n[:karma].to_s
+	end
+
+	def addNick(nick)
+		nicks = @DB[:karma]
+		nicks.insert(:nick => nick.capitalize, :karma => 0)
+	end
+
+	def nickExists(nick)
+		nicks = @DB[:karma]
+		n = nicks.where(:nick => nick.capitalize).first
+		if n
+			return true
+		else 
+			return false
+		end	
+	end
+
 
 end
