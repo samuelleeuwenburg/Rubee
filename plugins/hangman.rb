@@ -90,10 +90,6 @@ class Hangman
 		if r == @render
 			@tries -= 1
 		end
-<<<<<<< HEAD
-		addKarma m m.user.nick
-		m.reply "Correct: #{r}!"
-=======
 
 		@render = r.clone
 				
@@ -102,8 +98,8 @@ class Hangman
 			return false
 		end
 
+		addKarma m m.user.nick
 		m.reply "Correct: #{@render}!"
->>>>>>> upstream/master
 		reset_game()
 
 	end
