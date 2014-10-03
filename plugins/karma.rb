@@ -3,6 +3,9 @@ require "sequel"
 
 class Karma 
 	include Cinch::Plugin
+
+
+  	listen_to :add_karma
 	def initialize(*)
 		super
 

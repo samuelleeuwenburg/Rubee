@@ -1,4 +1,5 @@
 require 'cinch'
+require "sequel"
 
 class Hangman
 	include Cinch::Plugin
@@ -85,10 +86,29 @@ class Hangman
 				return false
 			end
 		end
-
+		addKarma m m.user.nick
 		m.reply "Correct: #{r}!"
 		reset_game()
 
 	end
+
+	def addKarma(m, nick)
+		nicks = @DB[:karma]
+
+		if m.user.to_s.capitalize == nick.capitalize 
+			return false
+		end
+
+		unless nickExists(nick)
+			addNick(nick)
+		end
+		
+		n = nicks.where(:nick => nick.capitalize).first
+		k = n[:karma] + 1
+		nicks.where(:nick => nick.capitalize).update(:karma => k)
+
+		m.reply renderKarma(nick)
+	end
+
 
 end
