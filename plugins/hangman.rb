@@ -69,6 +69,7 @@ class Hangman
 	def guess_entire_word(m, word)
 		if word == @word
 			m.reply "Correct: #{@word}!"
+			reset_game()
 		else 
 			@tries -= 1
 			m.reply "Sorry, you have #{@tries} tries left"
