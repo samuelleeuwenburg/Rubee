@@ -10,15 +10,16 @@ class Hangman
 		@url = "http://www.tulpweb.nl/willekeurigwoord/"
 
 		@word = nil
+		@render = nil
 		@tries = 10
-		@geussed = []
+		@guessed = []
 	end
 
 	def get_random_word()
 		@word = Nokogiri::HTML(open(@url)).at(".mainbar .article h2").text
 	end
 
-	def render_geusses()
+	def render_guesses()
 		alphabet = [
 			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
 			"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
@@ -26,14 +27,14 @@ class Hangman
 
 		render = @word.clone
 
-		for letter in @geussed
+		for letter in @guessed
 			if alphabet.include? letter
 				alphabet.delete(letter)
 			end
 		end
 
 		for letter in alphabet
-			render.gsub! letter, "."	
+			render.gsub! letter, "_"	
 		end
 
 		return render
@@ -42,10 +43,10 @@ class Hangman
 	def reset_game()
 		@word = nil
 		@tries = 10
-		@geussed = []
+		@guessed = []
 	end
 
-	match(/^\.h start$/i, method: :start_hangman, use_prefix: false)
+	match(/^hangman start$/i, method: :start_hangman, use_prefix: false)
 	def start_hangman(m) 
 		if not @word
 			get_random_word()
@@ -55,7 +56,7 @@ class Hangman
 		end
 	end
 
-	match(/^\.h end$/i, method: :end_hangman, use_prefix: false)
+	match(/^hangman end$/i, method: :end_hangman, use_prefix: false)
 	def end_hangman(m) 
 		if @word
 			m.reply "The word was #{@word}"
@@ -65,29 +66,44 @@ class Hangman
 		end
 	end
 
-	match(/^\.h ([a-zA-Z])$/i, method: :add_geuss, use_prefix: false)
-	def add_geuss(m, geuss)
-		if @geussed.include? geuss or not @word
-			m.reply build_geussed()
+	match(/^guess ([a-zA-Z]{2,})$/i, method: :guess_entire_word, use_prefix: false)
+	def guess_entire_word(m, word)
+		if word == @word
+			m.reply "Correct: #{@word}!"
+			reset_game()
+		else 
+			@tries -= 1
+			m.reply "Sorry, you have #{@tries} tries left"
+		end
+	end
+
+	match(/^\guess ([a-zA-Z])$/i, method: :add_guess, use_prefix: false)
+	def add_guess(m, guess)
+
+		if @guessed.include? guess or not @word
 			return false		
 		end
 		
-		@geussed.push(geuss)
-		r = render_geusses()
+		@guessed.push(guess)
+		r = render_guesses()
 
-		if r.include? '.'
+		if r == @render
 			@tries -= 1
-			if @tries == 0
-				m.reply "You lost the word was #{@word}"
-				reset_game()
-				return false
-			else 
-				m.reply "#{r} - You have #{@tries} tries left"
-				return false
-			end
 		end
+<<<<<<< HEAD
 		addKarma m m.user.nick
 		m.reply "Correct: #{r}!"
+=======
+
+		@render = r.clone
+				
+		if @render.include? '_'
+			m.reply "#{@render} - You have #{@tries} tries left"
+			return false
+		end
+
+		m.reply "Correct: #{@render}!"
+>>>>>>> upstream/master
 		reset_game()
 
 	end
