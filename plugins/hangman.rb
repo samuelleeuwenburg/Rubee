@@ -11,7 +11,7 @@ class Hangman
 
 		@word = nil
 		@render = nil
-		@tries = 10
+		@tries = 7
 		@guessed = []
 		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
@@ -44,7 +44,7 @@ class Hangman
 
 	def reset_game()
 		@word = nil
-		@tries = 10
+		@tries = 7
 		@guessed = []
 	end
 
@@ -70,12 +70,21 @@ class Hangman
 
 	match(/^guess ([a-zA-Z]{2,})$/i, method: :guess_entire_word, use_prefix: false)
 	def guess_entire_word(m, word)
+		if not @word
+			return false		
+		end
+
 		if word == @word
 			m.reply "Correct: #{@word}!"
 			reset_game()
 		else 
 			@tries -= 1
-			m.reply "Sorry, you have #{@tries} tries left"
+			m.reply "Sorry #{@tries} tries left"
+
+			if @tries == 0 
+				m.reply "You lose, the word was #{@word}"
+				reset_game()
+			end
 		end
 	end
 
@@ -97,6 +106,11 @@ class Hangman
 				
 		if @render.include? '_'
 			m.reply "#{@render} - You have #{@tries} tries left"
+		
+			if @tries == 0 
+				m.reply "Sorry you lose, the word was #{@word}"
+				reset_game()
+			end
 			return false
 		end
 
