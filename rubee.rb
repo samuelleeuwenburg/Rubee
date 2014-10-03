@@ -21,6 +21,7 @@ bot = Cinch::Bot.new do
 			Karma,
 			TinyURL,
 			Google,
+			Hangman,
 			Youtube,
 			Dictionary,
 			Social
