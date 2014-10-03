@@ -3,22 +3,26 @@ require "sequel"
 
 class Karma 
 	include Cinch::Plugin
-	DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+	def initialize(*)
+		super
+
+		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+	end
 
 	def renderKarma(nick)
-		nicks = DB[:karma]
-		n = nicks.where(:nick => nick).first
+		nicks = @DB[:karma]
+		n = nicks.where(:nick => nick.capitalize).first
 		return "Karma for " + n[:nick] + " = " + n[:karma].to_s
 	end
 
 	def addNick(nick)
-		nicks = DB[:karma]
-		nicks.insert(:nick => nick, :karma => 0)
+		nicks = @DB[:karma]
+		nicks.insert(:nick => nick.capitalize, :karma => 0)
 	end
 
 	def nickExists(nick)
-		nicks = DB[:karma]
-		n = nicks.where(:nick => nick).first
+		nicks = @DB[:karma]
+		n = nicks.where(:nick => nick.capitalize).first
 		if n
 			return true
 		else 
@@ -37,9 +41,9 @@ class Karma
 
 	match(/^\+(\w+)$/i, method: :addKarma, use_prefix: false)
 	def addKarma(m, nick)
-		nicks = DB[:karma]
+		nicks = @DB[:karma]
 
-		if m.user.to_s == nick
+		if m.user.to_s.capitalize == nick.capitalize 
 			return false
 		end
 
@@ -47,9 +51,9 @@ class Karma
 			addNick(nick)
 		end
 		
-		n = nicks.where(:nick => nick).first
+		n = nicks.where(:nick => nick.capitalize).first
 		k = n[:karma] + 1
-		nicks.where(:nick => nick).update(:karma => k)
+		nicks.where(:nick => nick.capitalize).update(:karma => k)
 
 		m.reply renderKarma(nick)
 	end

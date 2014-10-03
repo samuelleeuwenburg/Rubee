@@ -5,21 +5,27 @@ require "cleverbot-api"
 class Social
 	include Cinch::Plugin
 
-	match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
-	def handle_match(m, message)
+	def initialize(*)
+		super
+
+		@bot = CleverBot.new 
+
 		file = File.read(File.dirname(__FILE__)+"/../settings.json")
-		rubee_data = JSON.parse(file)
-		nick = rubee_data["nick"]
+		@rubee_data = JSON.parse(file)
+		@nick = @rubee_data["nick"]
 
 		file = File.read(File.dirname(__FILE__)+"/social.json")
-		responses = JSON.parse(file)
+		@responses = JSON.parse(file)
+	end
 
-		for matches in responses
+	match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
+	def handle_match(m, message)
+		for matches in @responses
 			for match in matches["matches"]
 				
 				# prepare m 
-				if match.include? "{{nick}}"
-					match = match.gsub! "{{nick}}", nick
+				if match.include? "{{@nick}}"
+					match = match.gsub! "{{@nick}}", @nick
 				end
 	
 				# if regexp matches incomming message
@@ -40,8 +46,7 @@ class Social
 						rand = Random.rand(matches["responses"].length)
 						reply = matches["responses"][rand]		
 					else
-						bot = CleverBot.new 
-						reply = bot.think message.gsub! /#{nick}/i, ""
+						reply = @bot.think message.gsub! /#{@nick}/i, ""
 					end
 
 					#prepare reply
@@ -61,9 +66,8 @@ class Social
 
 		# no reply found 
 		# if it contains our nickname, cleverbot reply anyway
-		if message.downcase.include? nick.downcase
-			bot = CleverBot.new 
-			reply = bot.think message.gsub! /#{nick}/i, ""
+		if message.downcase.include? @nick.downcase
+			reply = @bot.think message.gsub! /#{@nick}/i, ""
 
 			m.reply reply
 		end
