@@ -76,6 +76,7 @@ class Hangman
 
 		if word == @word
 			m.reply "Correct: #{@word}!"
+			addKarma m
 			reset_game()
 		else 
 			@tries -= 1
