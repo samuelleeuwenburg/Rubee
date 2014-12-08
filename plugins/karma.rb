@@ -33,7 +33,7 @@ class Karma
 		end	
 	end
 
-	match(/^\.k (\w+)$/i, method: :getKarma, use_prefix: false)
+	match(/^\karma (\w+)$/i, method: :getKarma, use_prefix: false)
 	def getKarma(m, nick)
 		unless nickExists(nick)
 			addNick(nick)
@@ -42,7 +42,7 @@ class Karma
 		m.reply renderKarma(nick)
 	end
 
-	match(/^\+(\w+)$/i, method: :addKarma, use_prefix: false)
+	match(/^\+\s(\w+)$/i, method: :addKarma, use_prefix: false)
 	def addKarma(m, nick)
 		nicks = @DB[:karma]
 
