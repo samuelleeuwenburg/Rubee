@@ -1,20 +1,20 @@
-require 'cinch'
+require "cinch"
 require "sequel"
 
 class Hangman
 	include Cinch::Plugin
-	
+
 	def initialize(*)
 		super
 		
 		@url = "http://www.tulpweb.nl/willekeurigwoord/"
 
-		@word = nil
-		@render = nil
-		@tries = 7
+		@word    = nil
+		@render  = nil
+		@tries   = 8
 		@guessed = []
-		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
+		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 	end
 
 	def get_random_word()
@@ -23,7 +23,7 @@ class Hangman
 
 	def render_guesses()
 		alphabet = [
-			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
 			"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 		]
 
@@ -36,7 +36,7 @@ class Hangman
 		end
 
 		for letter in alphabet
-			render.gsub! letter, "_"	
+			render.gsub! letter, "_"
 		end
 
 		return render
@@ -48,7 +48,7 @@ class Hangman
 		@guessed = []
 	end
 
-	match(/^hangman start$/i, method: :start_hangman, use_prefix: false)
+	match(/^hangman start[o]?$/i, method: :start_hangman, use_prefix: false)
 	def start_hangman(m) 
 		if not @word
 			get_random_word()
@@ -59,11 +59,11 @@ class Hangman
 	end
 
 	match(/^hangman end$/i, method: :end_hangman, use_prefix: false)
-	def end_hangman(m) 
+	def end_hangman(m)
 		if @word
 			m.reply "The word was #{@word}"
 			reset_game()
-		else 
+		else
 			m.reply "No game is currently in progress"
 		end
 	end
@@ -71,31 +71,31 @@ class Hangman
 	match(/^guess ([a-zA-Z]{2,})$/i, method: :guess_entire_word, use_prefix: false)
 	def guess_entire_word(m, word)
 		if not @word
-			return false		
+			return false
 		end
 
 		if word == @word
 			m.reply "Correct: #{@word}!"
 			addKarma m
 			reset_game()
-		else 
+		else
 			@tries -= 1
 			m.reply "Sorry #{@tries} tries left"
 
-			if @tries == 0 
+			if @tries == 0
 				m.reply "You lose, the word was #{@word}"
 				reset_game()
 			end
 		end
 	end
 
-	match(/^\guess ([a-zA-Z])$/i, method: :add_guess, use_prefix: false)
+	match(/^guess ([a-zA-Z])$/i, method: :add_guess, use_prefix: false)
 	def add_guess(m, guess)
 
 		if @guessed.include? guess or not @word
-			return false		
+			return false
 		end
-		
+
 		@guessed.push(guess)
 		r = render_guesses()
 
@@ -104,11 +104,11 @@ class Hangman
 		end
 
 		@render = r.clone
-				
+
 		if @render.include? '_'
 			m.reply "#{@render} - You have #{@tries} tries left"
-		
-			if @tries == 0 
+
+			if @tries == 0
 				m.reply "Sorry you lose, the word was #{@word}"
 				reset_game()
 			end
@@ -128,7 +128,7 @@ class Hangman
 		unless nickExists(nick)
 			addNick(nick)
 		end
-		
+
 		n = nicks.where(:nick => nick.capitalize).first
 		k = n[:karma] + 1
 		nicks.where(:nick => nick.capitalize).update(:karma => k)
@@ -152,10 +152,9 @@ class Hangman
 		n = nicks.where(:nick => nick.capitalize).first
 		if n
 			return true
-		else 
+		else
 			return false
-		end	
+		end
 	end
-
-
 end
+
