@@ -1,3 +1,4 @@
+require "json"
 require "cinch"
 require "sequel"
 
@@ -6,19 +7,23 @@ class Hangman
 
 	def initialize(*)
 		super
+
+		file = File.read(File.dirname(__FILE__)+"/hangman.json")
+		@hangman_data = JSON.parse(file)
 		
 		@url = "http://www.tulpweb.nl/willekeurigwoord/"
+        @selector = ".mainbar .article h2"
+		@tries   = 8
 
 		@word    = nil
 		@render  = nil
-		@tries   = 8
 		@guessed = []
 
 		@DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 	end
 
 	def get_random_word()
-		@word = Nokogiri::HTML(open(@url)).at(".mainbar .article h2").text
+		@word = Nokogiri::HTML(open(@url)).at(@selector).text
 	end
 
 	def render_guesses()
@@ -48,9 +53,32 @@ class Hangman
 		@guessed = []
 	end
 
-	match(/^hangman start[o]?$/i, method: :start_hangman, use_prefix: false)
-	def start_hangman(m) 
+	match(/^hangman start[o]? ([A-Za-z]{2,})$/i, method: :start_hangman, use_prefix: false)
+	def start_hangman(m, name) 
+        # if no game is already in progress
 		if not @word
+
+            @url = false
+            game_types = ""
+
+            # get given game type data
+            for data in @hangman_data 
+                if data["name"] == name
+                    @url = data["url"] 
+                    @selector = data["selector"] 
+                    @tries = data["tries"]
+                    break
+                end
+                game_types.concat "#{data["name"]}, "
+            end
+
+            # if no game type matched
+            if not @url
+                m.reply "There is no hangman game type called \"#{name}\", available game types are: #{game_types}"
+                return false
+            end
+   
+            # start game
 			get_random_word()
 			m.reply "A new game of hangman has started!"
 		else 
@@ -83,7 +111,7 @@ class Hangman
 			m.reply "Sorry #{@tries} tries left"
 
 			if @tries == 0
-				m.reply "You lose, the word was #{@word}"
+				m.reply "You lose, the word was \"#{@word}\""
 				reset_game()
 			end
 		end

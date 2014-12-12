@@ -12,6 +12,12 @@ bot = Cinch::Bot.new do
 		rubee_data = JSON.parse(file)
 
 		c.server = rubee_data["server"] 
+		c.ssl.use = rubee_data["ssl"] 
+
+        if rubee_data["serverpwd"]
+            c.password = rubee_data["serverpwd"]
+        end
+
 		c.channels = rubee_data["channels"]
 		c.nick = rubee_data["nick"]
 		c.user = rubee_data["nick"] 
@@ -35,6 +41,5 @@ bot = Cinch::Bot.new do
 
 	end
 end
-
 
 bot.start

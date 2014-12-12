@@ -1,0 +1,20 @@
+[
+    {
+        "name": "urban",
+        "url": "http://urbandictionary.com/random.php",
+        "selector": ".word",
+        "tries": 10
+    },
+    {
+        "name": "dutch",
+        "url": "http://www.tulpweb.nl/willekeurigwoord/",
+        "selector": ".mainbar .article h2",
+        "tries": 7
+    },
+    {
+        "name": "english",
+        "url": "http://www.randomlists.com/random-words",
+        "selector": ".crux",
+        "tries": 7
+    }
+]

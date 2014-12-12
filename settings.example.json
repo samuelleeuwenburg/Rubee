@@ -1,7 +1,9 @@
 {
+	"server": "irc.freenode.net",
+	"serverpwd": false,
+	"ssl": true,
 	"nick": "RubeeTheTester",
 	"password": "",
-	"server": "irc.freenode.net",
 	"channels": [
 		"#rubeetest"
 	]
