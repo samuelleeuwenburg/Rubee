@@ -11,11 +11,11 @@ class Hangman
 		file = File.read(File.dirname(__FILE__)+"/hangman.json")
 		@hangman_data = JSON.parse(file)
 		
-		@url = "http://www.tulpweb.nl/willekeurigwoord/"
-        @selector = ".mainbar .article h2"
-		@tries   = 8
+		@url = false
+        @selector = ''
+		@tries = 0
 
-		@word    = nil
+		@word = nil
 		@render  = nil
 		@guessed = []
 
@@ -23,7 +23,7 @@ class Hangman
 	end
 
 	def get_random_word()
-		@word = Nokogiri::HTML(open(@url)).at(@selector).text
+		@word = Nokogiri::HTML(open(@url)).at(@selector).text.downcase
 	end
 
 	def render_guesses()
