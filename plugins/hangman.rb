@@ -41,7 +41,7 @@ class Hangman
 		end
 
 		for letter in alphabet
-			render.gsub! letter, "_"
+			render.gsub! letter, "-"
 		end
 
 		return render
