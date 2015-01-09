@@ -133,7 +133,7 @@ class Hangman
 
 		@render = r.clone
 
-		if @render.include? '_'
+		if @render.include? '-'
 			m.reply "#{@render} - You have #{@tries} tries left"
 
 			if @tries == 0

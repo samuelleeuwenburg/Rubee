@@ -8,7 +8,7 @@
     {
         "name": "dutch",
         "url": "http://www.tulpweb.nl/willekeurigwoord/",
-        "selector": ".mainbar .article h2",
+        "selector": "#content h2",
         "tries": 7
     },
     {
