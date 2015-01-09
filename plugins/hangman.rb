@@ -134,7 +134,7 @@ class Hangman
 		@render = r.clone
 
 		if @render.include? '-'
-			m.reply "#{@render} - You have #{@tries} tries left"
+			m.reply "#{@render}  |  You have #{@tries} tries left"
 
 			if @tries == 0
 				m.reply "Sorry you lose, the word was #{@word}"
