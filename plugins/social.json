@@ -1,79 +1,83 @@
-[
-	{
-		"matches": [
-			"hi {{nick}}",
-			"hey {{nick}}",
-			"yo {{nick}}",
-			"ola {{nick}}",
-			"hello {{nick}}",
-			"hoi {{nick}}"
-		],
-		"responses": [
-			"Hi {{sender}}",
-			"Hello {{sender}}"
-		]
-	},
-	{
-		"matches": [
-			"bye {{nick}}",
-			"later {{nick}}",
-			"ciao {{nick}}",
-			"cya {{nick}}"
-		],
-		"responses": [
-			"Bye bye {{sender}}",
-			"Cya {{sender}}"
-		]
-	},
-	{
-		"matches": [
-			"thanks {{nick}}",
-			"thank you {{nick}}",
-			"ty {{nick}}"
-		],
-		"responses": [
-			"np {{sender}}",
-			"no biggie {{sender}}",
-			"No problem {{sender}}"
-		]
-	},
-	{
-		"matches": [
-			"how are you {{nick}}?",
-			"sup {{nick}}?",
-			"you good {{nick}}?",
-			"hows things {{nick}}?",
-			"all good {{nick}}?"
-		],
-		"responses": [
-			"np {{sender}}",
-			"no biggie {{sender}}",
-			"No problem {{sender}}"
-		]
-	},
-	{
-		"matches": [
-			":)",
-			":D",
-			":D"
-		],
-		"responses": [
-			":D",
-			":)"
-		],
-		"odds": 4
-	},
-	{
-		"matches": [
-			":(",
-			":'(",
-			"D:"
-		],
-		"responses": [
-			":(",
-			":'(",
-			"D:"
-		],
-		"odds": 4
-	}
-]
+{
+  "random": false,
+  "odds": 0.1,
+  "vocabulary" : [
+    {
+      "matches": [
+        "hi {{nick}}",
+        "hey {{nick}}",
+        "yo {{nick}}",
+        "ola {{nick}}",
+        "hello {{nick}}",
+        "hoi {{nick}}"
+      ],
+      "responses": [
+        "Hi {{sender}}",
+        "Hello {{sender}}"
+      ]
+    },
+    {
+      "matches": [
+        "bye {{nick}}",
+        "later {{nick}}",
+        "ciao {{nick}}",
+        "cya {{nick}}"
+      ],
+      "responses": [
+        "Bye bye {{sender}}",
+        "Cya {{sender}}"
+      ]
+    },
+    {
+      "matches": [
+        "thanks {{nick}}",
+        "thank you {{nick}}",
+        "ty {{nick}}"
+      ],
+      "responses": [
+        "np {{sender}}",
+        "no biggie {{sender}}",
+        "No problem {{sender}}"
+      ]
+    },
+    {
+      "matches": [
+        "how are you {{nick}}?",
+        "sup {{nick}}?",
+        "you good {{nick}}?",
+        "hows things {{nick}}?",
+        "all good {{nick}}?"
+      ],
+      "responses": [
+        "np {{sender}}",
+        "no biggie {{sender}}",
+        "No problem {{sender}}"
+      ]
+    },
+    {
+      "matches": [
+        ":)",
+        ":D",
+        ":D"
+      ],
+      "responses": [
+        ":D",
+        ":)"
+      ],
+      "odds": 4
+    },
+    {
+      "matches": [
+        ":(",
+        ":'(",
+        "D:"
+      ],
+      "responses": [
+        ":(",
+        ":'(",
+        "D:"
+      ],
+      "odds": 4
+    }
+  ]
+}

@@ -15,11 +15,22 @@ class Social
 		@nick = @rubee_data["nick"]
 
 		file = File.read(File.dirname(__FILE__)+"/social.json")
-		@responses = JSON.parse(file)
+    @social_data = JSON.parse(file)
+		@random = @social_data['random']
+		@odds = @social_data['odds']
+		@responses = @social_data['vocabulary']
 	end
 
 	match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
 	def handle_match(m, message)
+
+    # if random reply is on, reply on anything given the odds
+    if @random and rand < @odds
+			reply = @bot.think message.gsub! /#{@nick}/i, ""
+			m.reply reply
+      return true
+    end
+
 		for matches in @responses
 			for match in matches["matches"]
 				
