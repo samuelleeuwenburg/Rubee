@@ -117,6 +117,14 @@ class Hangman
 		end
 	end
 
+	match(/^highscore/i, method: :mostKarma, use_prefix: false)
+	def mostKarma(m)
+		nicks = @DB['select * from karma ORDER BY karma DESC']
+		puts nicks.first
+		m.user.send "The person with the highest score is #{nicks.first[:nick]} with #{nicks.first[:karma]} karma!";
+		
+	end
+	
 	match(/^guess ([a-zA-Z])$/i, method: :add_guess, use_prefix: false)
 	def add_guess(m, guess)
 
