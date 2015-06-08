@@ -8,7 +8,7 @@ class Hangman
   def initialize(*)
     super
 
-    file = File.read(File.dirname(__FILE__)+"/hangman.json")
+    file          = File.read(File.dirname(__FILE__)+"/hangman.json")
     @hangman_data = JSON.parse(file)
 
     @url = false
@@ -57,15 +57,15 @@ class Hangman
   def start_hangman(m, name)
     # if no game is already in progress
     if not @word
-      @url = false
+      @url       = false
       game_types = ""
 
       # get given game type data
       for data in @hangman_data
         if data["name"] == name
-          @url = data["url"]
+          @url      = data["url"]
           @selector = data["selector"]
-          @tries = data["tries"]
+          @tries    = data["tries"]
           break
         end
         game_types.concat "#{data["name"]}, "
@@ -125,7 +125,6 @@ class Hangman
 
   match(/^guess ([a-zA-Z])$/i, method: :add_guess, use_prefix: false)
   def add_guess(m, guess)
-
     if @guessed.include? guess or not @word
       return false
     end
@@ -152,7 +151,6 @@ class Hangman
     addKarma m
     m.reply "Correct: #{@render}!"
     reset_game()
-
   end
 
   def addKarma(m)
@@ -165,6 +163,7 @@ class Hangman
 
     n = nicks.where(:nick => nick.capitalize).first
     k = n[:karma] + 1
+
     nicks.where(:nick => nick.capitalize).update(:karma => k)
 
     m.reply renderKarma(nick)
@@ -172,7 +171,8 @@ class Hangman
 
   def renderKarma(nick)
     nicks = @DB[:karma]
-    n = nicks.where(:nick => nick.capitalize).first
+    n     = nicks.where(:nick => nick.capitalize).first
+
     return "Karma for " + n[:nick] + " = " + n[:karma].to_s
   end
 
@@ -183,7 +183,8 @@ class Hangman
 
   def nickExists(nick)
     nicks = @DB[:karma]
-    n = nicks.where(:nick => nick.capitalize).first
+    n     = nicks.where(:nick => nick.capitalize).first
+
     if n
       return true
     else

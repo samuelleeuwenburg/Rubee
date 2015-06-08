@@ -14,7 +14,8 @@ class Karma
 
   def renderKarma(nick)
     nicks = @DB[:karma]
-    n = nicks.where(:nick => nick.capitalize).first
+    n     = nicks.where(:nick => nick.capitalize).first
+
     return "Karma for " + n[:nick] + " = " + n[:karma].to_s
   end
 
@@ -25,7 +26,8 @@ class Karma
 
   def nickExists(nick)
     nicks = @DB[:karma]
-    n = nicks.where(:nick => nick.capitalize).first
+    n     = nicks.where(:nick => nick.capitalize).first
+
     if n
       return true
     else
@@ -56,6 +58,7 @@ class Karma
 
     n = nicks.where(:nick => nick.capitalize).first
     k = n[:karma] + 1
+
     nicks.where(:nick => nick.capitalize).update(:karma => k)
 
     m.reply renderKarma(nick)

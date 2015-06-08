@@ -8,17 +8,17 @@ class Social
   def initialize(*)
     super
 
-    @bot = CleverBot.new
+    @bot         = CleverBot.new
 
-    file = File.read(File.dirname(__FILE__)+"/../settings.json")
-    @rubee_data = JSON.parse(file)
-    @nick = @rubee_data["nick"]
+    file         = File.read(File.dirname(__FILE__)+"/../settings.json")
+    @rubee_data  = JSON.parse(file)
+    @nick        = @rubee_data["nick"]
 
-    file = File.read(File.dirname(__FILE__)+"/social.json")
+    file         = File.read(File.dirname(__FILE__)+"/social.json")
     @social_data = JSON.parse(file)
-    @random = @social_data['random']
-    @odds = @social_data['odds']
-    @responses = @social_data['vocabulary']
+    @random      = @social_data['random']
+    @odds        = @social_data['odds']
+    @responses   = @social_data['vocabulary']
   end
 
   match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
@@ -51,7 +51,7 @@ class Social
 
           # cointoss: random reply or cleverbot reply
           if Random.rand(2) == 0
-            rand = Random.rand(matches["responses"].length)
+            rand  = Random.rand(matches["responses"].length)
             reply = matches["responses"][rand]
           else
             reply = @bot.think message.gsub! /#{@nick}/i, ""
