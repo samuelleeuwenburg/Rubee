@@ -67,7 +67,7 @@ class Karma
   match(/^highscore/i, method: :highscore, use_prefix: false)
   def highscore(m)
     results = @DB['select * from karma ORDER BY karma DESC LIMIT 0, 3']
-    prefix  = "Karma top 3:"
+    prefix  = "Karma top 3: "
     reply   = ""
 
     for result in results
