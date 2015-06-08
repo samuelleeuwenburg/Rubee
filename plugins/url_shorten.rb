@@ -1,15 +1,14 @@
 require 'open-uri'
 require 'cinch'
+
 class TinyURL
-	include Cinch::Plugin
+  include Cinch::Plugin
 
+  match(/^\.tu (.+)/i, method: :shorten_url, use_prefix: false)
+  def shorten_url(m, url)
+    url = open("http://tinyurl.com/api-create.php?url=#{URI.escape(url)}").read
 
-	match(/^\.tu (.+)/i, method: :shorten_url, use_prefix: false)
-	def shorten_url(m, url)
-		
-		url = open("http://tinyurl.com/api-create.php?url=#{URI.escape(url)}").read
-		
-		m.reply url 
-	end
-
+    m.reply url 
+  end
 end
+
