@@ -96,13 +96,13 @@ class Hangman
 		end
 	end
 
-	match(/^guess ([a-zA-Z]{2,})$/i, method: :guess_entire_word, use_prefix: false)
+	match(/^guess ([a-zA-Z ]{2,})$/i, method: :guess_entire_word, use_prefix: false)
 	def guess_entire_word(m, word)
 		if not @word
 			return false
 		end
 
-		if word == @word
+		if word.capitalize == @word.capitalize
 			m.reply "Correct: #{@word}!"
 			addKarma m
 			reset_game()
