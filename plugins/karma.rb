@@ -63,5 +63,18 @@ class Karma
 
     m.reply renderKarma(nick)
   end
+
+  match(/^highscore/i, method: :highscore, use_prefix: false)
+  def highscore(m)
+    results = @DB['select * from karma ORDER BY karma DESC LIMIT 0, 3']
+    reply   = "Karma top 3:"
+
+    for result in results
+      # @todo: you might want to add a , between nicks to make it cleaner
+      reply += " #{result[:nick]} (#{result[:karma]})"
+    end
+
+    m.reply "#{reply}"
+  end
 end
 
