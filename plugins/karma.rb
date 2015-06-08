@@ -68,13 +68,13 @@ class Karma
   def highscore(m)
     results = @DB['select * from karma ORDER BY karma DESC LIMIT 0, 3']
     prefix  = "Karma top 3: "
-    reply   = ""
+    losers  = []
 
     for result in results
-      reply += "#{result[:nick]} (#{result[:karma]})"
+      losers.push("#{result[:nick]} (#{result[:karma]})")
     end
 
-    reply.join(", ")
+    reply = losers.join(", ")
 
     m.reply "#{prefix} #{reply}"
   end
