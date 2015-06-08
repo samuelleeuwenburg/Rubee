@@ -67,14 +67,16 @@ class Karma
   match(/^highscore/i, method: :highscore, use_prefix: false)
   def highscore(m)
     results = @DB['select * from karma ORDER BY karma DESC LIMIT 0, 3']
-    reply   = "Karma top 3:"
+    prefix  = "Karma top 3: "
+    reply   = ""
 
     for result in results
-      # @todo: you might want to add a , between nicks to make it cleaner
-      reply += " #{result[:nick]} (#{result[:karma]})"
+      reply += "#{result[:nick]} (#{result[:karma]})"
     end
 
-    m.reply "#{reply}"
+    reply.join(", ")
+
+    m.reply "#{prefix} #{reply}"
   end
 end
 
