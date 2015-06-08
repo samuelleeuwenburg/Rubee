@@ -3,86 +3,81 @@ require "json"
 require "cleverbot-api"
 
 class Social
-	include Cinch::Plugin
+  include Cinch::Plugin
 
-	def initialize(*)
-		super
+  def initialize(*)
+    super
 
-		@bot = CleverBot.new 
+    @bot = CleverBot.new
 
-		file = File.read(File.dirname(__FILE__)+"/../settings.json")
-		@rubee_data = JSON.parse(file)
-		@nick = @rubee_data["nick"]
+    file = File.read(File.dirname(__FILE__)+"/../settings.json")
+    @rubee_data = JSON.parse(file)
+    @nick = @rubee_data["nick"]
 
-		file = File.read(File.dirname(__FILE__)+"/social.json")
+    file = File.read(File.dirname(__FILE__)+"/social.json")
     @social_data = JSON.parse(file)
-		@random = @social_data['random']
-		@odds = @social_data['odds']
-		@responses = @social_data['vocabulary']
-	end
+    @random = @social_data['random']
+    @odds = @social_data['odds']
+    @responses = @social_data['vocabulary']
+  end
 
-	match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
-	def handle_match(m, message)
-
+  match(/^([^.!?+].*)$/i, method: :handle_match, use_prefix: false)
+  def handle_match(m, message)
     # if random reply is on, reply on anything given the odds
     if @random and rand < @odds
-			reply = @bot.think message.gsub! /#{@nick}/i, ""
-			m.reply reply
+      reply = @bot.think message.gsub! /#{@nick}/i, ""
+      m.reply reply
       return true
     end
 
-		for matches in @responses
-			for match in matches["matches"]
-				
-				# prepare m 
-				if match.include? "{{@nick}}"
-					match = match.gsub! "{{@nick}}", @nick
-				end
-	
-				# if regexp matches incomming message
-				if match.downcase == message.downcase
+    for matches in @responses
+      for match in matches["matches"]
+        # prepare m
+        if match.include? "{{@nick}}"
+          match = match.gsub! "{{@nick}}", @nick
+        end
 
-					# check odds of replying
-					if matches["odds"] != nil
-						rand = Random.rand(matches["odds"])
+        # if regexp matches incomming message
+        if match.downcase == message.downcase
+          # check odds of replying
+          if matches["odds"] != nil
+            rand = Random.rand(matches["odds"])
 
-						# dont reply if the dice doesn't roll 0
-						if rand != 0
-							return false
-						end
-					end
+            # dont reply if the dice doesn't roll 0
+            if rand != 0
+              return false
+            end
+          end
 
-					# cointoss: random reply or cleverbot reply
-					if Random.rand(2) == 0
-						rand = Random.rand(matches["responses"].length)
-						reply = matches["responses"][rand]		
-					else
-						reply = @bot.think message.gsub! /#{@nick}/i, ""
-					end
+          # cointoss: random reply or cleverbot reply
+          if Random.rand(2) == 0
+            rand = Random.rand(matches["responses"].length)
+            reply = matches["responses"][rand]
+          else
+            reply = @bot.think message.gsub! /#{@nick}/i, ""
+          end
 
-					#prepare reply
-					if reply.include? "{{sender}}"
-						reply = reply.gsub! "{{sender}}", m.user.nick
-					end
+          #prepare reply
+          if reply.include? "{{sender}}"
+            reply = reply.gsub! "{{sender}}", m.user.nick
+          end
 
-					# reply 
-					m.reply reply 
+          # reply
+          m.reply reply
 
-					# stop looping after reply has been found
-					return false
+          # stop looping after reply has been found
+          return false
+        end
+      end
+    end
 
-				end
-			end
-		end
+    # no reply found
+    # if it contains our nickname, cleverbot reply anyway
+    if message.downcase.include? @nick.downcase
+      reply = @bot.think message.gsub! /#{@nick}/i, ""
 
-		# no reply found 
-		# if it contains our nickname, cleverbot reply anyway
-		if message.downcase.include? @nick.downcase
-			reply = @bot.think message.gsub! /#{@nick}/i, ""
-
-			m.reply reply
-		end
-
-	end
-
+      m.reply reply
+    end
+  end
 end
+
