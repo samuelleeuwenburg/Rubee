@@ -12,7 +12,7 @@ class Dictionary
     url        = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
     definition = Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')
 
-    m.reply query + ': ' + definition
+    m.reply query + ': ' + definition[0..220] + '...'
   end
 end
 
