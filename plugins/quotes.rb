@@ -5,7 +5,7 @@ require 'nokogiri'
 require "sequel"
 
 
-class Hangman
+class Quote 
   include Cinch::Plugin
 
   def initialize(*)
@@ -17,15 +17,41 @@ class Hangman
     @answer = nil
     @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
+    @cooldown = 600
+    @timer = @cooldown
+    @onCooldown = false
+
   end
 
   def reset_game()
     @quotes = []
     @answer = nil
+
+    startCooldown()
+  end
+
+  def startCooldown
+    if not @onCooldown
+      @onCooldown = true
+
+      while @timer != 0
+        sleep(1)
+        @timer -= 1
+      end
+
+      @timer = @cooldown
+      @onCooldown = false
+    end
   end
 
   match(/^quote start[o]?$/i, method: :start_quote, use_prefix: false)
   def start_quote(m)
+    if @onCooldown
+      timeLeft = (Time.mktime(0)+@timer).strftime("%M:%S")
+      m.reply "Game is on cooldown, try again in #{timeLeft} minutes"
+      return false
+    end
+
     unless @answer
       uri = URI(@url)
       html = Net::HTTP.post_form(uri, "num" => @results)
@@ -69,8 +95,8 @@ class Hangman
   match(/^answer ([0-9])$/i, method: :answer_quote, use_prefix: false)
   def answer_quote(m, input) 
 
-    unless @quotes[input.to_i - 1].nil?
-      answer = "#{@quotes[input.to_i - 1][:author]}" 
+    unless @quotes[input.to_i].nil?
+      answer = "#{@quotes[input.to_i][:author]}" 
 
       if answer == @answer 
         addKarma m

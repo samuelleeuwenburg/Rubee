@@ -25,9 +25,10 @@ bot = Cinch::Bot.new do
     c.plugins.plugins = [
       Cinch::Plugins::Identify,
       Karma,
+      Hangman,
+      Quote,
       TinyURL,
       Google,
-      Hangman,
       Youtube,
       Dictionary,
       Social

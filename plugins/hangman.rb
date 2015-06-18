@@ -20,6 +20,24 @@ class Hangman
     @guessed = []
 
     @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+
+    @cooldown = 1200
+    @timer = @cooldown
+    @onCooldown = false
+  end
+
+  def startCooldown
+    if not @onCooldown
+      @onCooldown = true
+
+      while @timer != 0
+        sleep(1)
+        @timer -= 1
+      end
+
+      @timer = @cooldown
+      @onCooldown = false
+    end
   end
 
   def get_random_word()
@@ -51,10 +69,18 @@ class Hangman
     @word = nil
     @tries = 7
     @guessed = []
+
+    startCooldown()
   end
 
   match(/^hangman start[o]? ([A-Za-z]{2,})$/i, method: :start_hangman, use_prefix: false)
   def start_hangman(m, name)
+    if @onCooldown
+      timeLeft = (Time.mktime(0)+@timer).strftime("%M:%S")
+      m.reply "Game is on cooldown, try again in #{timeLeft} minutes"
+      return false
+    end
+
     # if no game is already in progress
     if not @word
       @url       = false
