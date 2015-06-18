@@ -12,7 +12,7 @@ class Hangman
     super
 
     @url = "http://www.miniwebtool.com/random-quote-generator/"
-    @results = "3"
+    @results = "5"
     @quotes = []
     @answer = nil
     @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
@@ -77,7 +77,8 @@ class Hangman
         m.reply "Correct!"
         reset_game()
       else
-        m.reply "Incorrect!"
+        m.reply "Incorrect, the answer was #{@answer}"
+        reset_game()
       end
     end
 
