@@ -44,7 +44,7 @@ class Karma
     m.reply renderKarma(nick)
   end
 
-  match(/^\+\s(\w+)$/i, method: :addKarma, use_prefix: false)
+  match(/^(\w+)\+\+$/i, method: :addKarma, use_prefix: false)
   def addKarma(m, nick)
     nicks = @DB[:karma]
 
