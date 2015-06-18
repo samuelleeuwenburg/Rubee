@@ -63,12 +63,12 @@ class Quote
         @quotes.push({ author: author, quote: quote })
       end
 
-      # set quote and answer 
-      m.reply "#{@quotes.first()[:quote]}"
-      @answer = @quotes.first()[:author]
+      #get random entry
+      sample = @quotes.sample
 
-      # shuffle the array
-      @quotes.shuffle
+      # set quote and answer 
+      m.reply "#{sample[:quote]}"
+      @answer = sample[:author]
 
       reply = "was a quote by: "
       @quotes.each_with_index do |quote, index|
