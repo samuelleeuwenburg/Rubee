@@ -12,7 +12,7 @@ class Hangman
     @hangman_data = JSON.parse(file)
 
     @url = false
-        @selector = ''
+    @selector = ''
     @tries = 0
 
     @word = nil
@@ -31,8 +31,8 @@ class Hangman
       @onCooldown = true
 
       while @timer != 0
-        sleep(1)
-        @timer -= 1
+	sleep(1)
+	@timer -= 1
       end
 
       @timer = @cooldown
@@ -54,7 +54,7 @@ class Hangman
 
     for letter in @guessed
       if alphabet.include? letter
-        alphabet.delete(letter)
+	alphabet.delete(letter)
       end
     end
 
@@ -88,19 +88,19 @@ class Hangman
 
       # get given game type data
       for data in @hangman_data
-        if data["name"] == name
-          @url      = data["url"]
-          @selector = data["selector"]
-          @tries    = data["tries"]
-          break
-        end
-        game_types.concat "#{data["name"]}, "
+	if data["name"] == name
+	  @url      = data["url"]
+	  @selector = data["selector"]
+	  @tries    = data["tries"]
+	  break
+	end
+	game_types.concat "#{data["name"]}, "
       end
 
       # if no game type matched
       if not @url
-        m.reply "There is no hangman game type called \"#{name}\", available game types are: #{game_types}"
-        return false
+	m.reply "There is no hangman game type called \"#{name}\", available game types are: #{game_types}"
+	return false
       end
 
       # start game
@@ -136,8 +136,8 @@ class Hangman
       m.reply "Sorry #{@tries} tries left"
 
       if @tries == 0
-        m.reply "You lose, the word was \"#{@word}\""
-        reset_game()
+	m.reply "You lose, the word was \"#{@word}\""
+	reset_game()
       end
     end
   end
@@ -161,8 +161,8 @@ class Hangman
       m.reply "#{@render}  |  You have #{@tries} tries left"
 
       if @tries == 0
-        m.reply "Sorry you lose, the word was #{@word}"
-        reset_game()
+	m.reply "Sorry you lose, the word was #{@word}"
+	reset_game()
       end
       return false
     end
@@ -171,7 +171,7 @@ class Hangman
     m.reply "Correct: #{@render}!"
     reset_game()
   end
-  
+
   match(/^show guessed$/i, method: :show_guessed, use_prefix: false)
   def show_guessed(m) 
     if not @word
@@ -195,6 +195,10 @@ class Hangman
     end
 
     n = nicks.where(:nick => nick.capitalize).first
+    k = n[:karma] + 1
+
+    nicks.where(:nick => nick.capitalize).update(:karma => k)
+
     m.reply renderKarma(nick)
   end
 
