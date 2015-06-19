@@ -92,7 +92,7 @@ class Quote
     end
   end
 
-  match(/^answer ([0-9])$/i, method: :answer_quote, use_prefix: false)
+  match(/^guess ([0-9])$/i, method: :answer_quote, use_prefix: false)
   def answer_quote(m, input) 
 
     unless @quotes[input.to_i].nil?
