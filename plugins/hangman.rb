@@ -172,7 +172,6 @@ class Hangman
     reset_game()
   end
   
-  #working here
   match(/^show guessed$/i, method: :show_guessed, use_prefix: false)
   def show_guessed(m) 
     if not @word
