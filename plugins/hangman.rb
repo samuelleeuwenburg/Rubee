@@ -171,6 +171,21 @@ class Hangman
     m.reply "Correct: #{@render}!"
     reset_game()
   end
+  
+  #working here
+  match(/^show guessed$/i, method: :show_guessed, use_prefix: false)
+  def show_guessed(m) 
+    if not @word
+      return false
+    end
+
+    if @guessed.empty?
+      m.reply "You haven't guessed any letters yet!"
+    else 
+      @guessed.sort { |a, b| a <=> b }
+      m.reply "Letters guessed: #{@guessed.join(", ")}"
+    end
+  end 
 
   def addKarma(m)
     nicks = @DB[:karma]
@@ -181,10 +196,6 @@ class Hangman
     end
 
     n = nicks.where(:nick => nick.capitalize).first
-    k = n[:karma] + 1
-
-    nicks.where(:nick => nick.capitalize).update(:karma => k)
-
     m.reply renderKarma(nick)
   end
 
