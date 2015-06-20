@@ -57,4 +57,6 @@ class Gassed
 		@answer = nil
 		m.reply("Game over")
 	end
+
+	#todo: implement karma update
 end
