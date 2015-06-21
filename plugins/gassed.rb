@@ -11,7 +11,7 @@ class Gassed
     @guesses_left = nil
   end 
 
-  match(/^guess the gassed +(\d+)?$/i, method: :start_gassed, use_prefix: false)
+  match(/^guess the gassed ?(\d+)?$/i, method: :start_gassed, use_prefix: false)
   def start_gassed(m, input_range=nil)
     if not input_range
       @range = rand(200)
@@ -26,24 +26,27 @@ class Gassed
 
   match(/^guess (\d+)$/i, method: :play, use_prefix: false)
   def play(m, guess) 
-    if not @answer
+    if not @answer  
       return false
     end
 
     guess = Integer(guess)
-    if @guesses_left > 1
+    if guess != @answer
       @guesses_left -= 1
-      if guess == @answer
-        m.reply("You guessed the gassed!, #{@answer}")
+
+      if @guesses_left == 0
+        m.reply("Sorry, you lose. The answer was #{@answer}")
         reset_game(m)
+      end
+
+      if guess > @answer
+        m.reply("Lower, #{@guesses_left} guesses left")
       elsif guess < @answer
         m.reply("Higher, #{@guesses_left} guesses left")
-      else
-        m.reply("Lower, #{@guesses_left} guesses left")
       end
 
     else
-      m.reply("Sorry, the number was #{@answer}")
+      m.reply("correct, it was #{@answer}")
       reset_game(m)
     end
   end
