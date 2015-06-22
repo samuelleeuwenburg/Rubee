@@ -31,7 +31,8 @@ bot = Cinch::Bot.new do
       Google,
       Youtube,
       Dictionary,
-      Social
+      Social,
+      Highlow
     ]
 
     c.plugins.options[Cinch::Plugins::Identify] = {
@@ -44,4 +45,3 @@ bot = Cinch::Bot.new do
 end
 
 bot.start
-
