@@ -32,7 +32,7 @@ bot = Cinch::Bot.new do
       Youtube,
       Dictionary,
       Social,
-			Highlow
+      Highlow
     ]
 
     c.plugins.options[Cinch::Plugins::Identify] = {
