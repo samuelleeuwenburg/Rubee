@@ -182,7 +182,7 @@ class Hangman
     if @guessed.empty?
       m.reply "You haven't guessed any letters yet!"
     else 
-      @guessed.sort { |a, b| a <=> b }
+      @guessed.sort! { |a,b| a <=> b }
       m.reply "Letters guessed: #{@guessed.join(", ")}"
     end
   end 
