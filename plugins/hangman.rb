@@ -21,7 +21,7 @@ class Hangman
 
     @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
-    @cooldown = 1200
+    @cooldown = 300
     @timer = @cooldown
     @onCooldown = false
   end
