@@ -24,6 +24,7 @@ class Quote
     @timeToGuess = 20
   
     @correctGuesses = []
+    @guesses = []
 
   end
 
@@ -31,6 +32,7 @@ class Quote
     @quotes = []
     @answer = nil
     @correctGuesses = []
+    @guesses = []
 
     startCooldown()
   end
@@ -122,10 +124,17 @@ class Quote
           hasGuessed = true
         end
       end
+      @guesses.each do |guessMessage|
+        if guessMessage.user.nick == m.user.nick 
+          hasGuessed = true
+        end
+      end
      
       answer = "#{@quotes[input.to_i][:author]}" 
       if answer == @answer and not hasGuessed
         @correctGuesses.push m
+      else
+        @guesses.push m
       end
     end
 
