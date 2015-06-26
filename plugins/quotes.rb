@@ -17,15 +17,20 @@ class Quote
     @answer = nil
     @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
-    @cooldown = 600
+    @cooldown = 180
     @timer = @cooldown
     @onCooldown = false
+
+    @timeToGuess = 20
+  
+    @correctGuesses = []
 
   end
 
   def reset_game()
     @quotes = []
     @answer = nil
+    @correctGuesses = []
 
     startCooldown()
   end
@@ -70,13 +75,27 @@ class Quote
       m.reply "#{sample[:quote]}"
       @answer = sample[:author]
 
-      reply = "was a quote by: "
+      reply = "#{@answer} was a quote by: "
       @quotes.each_with_index do |quote, index|
         reply.concat "#{index}) #{quote[:author]}  "
       end
       reply.concat "?"
 
       m.reply reply
+      
+      #give people time to guess
+      sleep(@timeToGuess)
+
+      if @correctGuesses.length > 0
+        @correctGuesses[0]
+        m.reply "#{@correctGuesses[0].user.nick} had it correct first, the answer was #{@answer}"
+        addKarma @correctGuesses[0]
+        reset_game()
+      else
+        m.reply "Incorrect, the answer was #{@answer}"
+        reset_game()
+      end
+
     else
       m.reply "A game is still ongoing"
     end
@@ -99,12 +118,7 @@ class Quote
       answer = "#{@quotes[input.to_i][:author]}" 
 
       if answer == @answer 
-        addKarma m
-        m.reply "Correct!"
-        reset_game()
-      else
-        m.reply "Incorrect, the answer was #{@answer}"
-        reset_game()
+        @correctGuesses.push m
       end
     end
 
