@@ -115,8 +115,14 @@ class Quote
   def answer_quote(m, input) 
 
     unless @quotes[input.to_i].nil?
+      # allow only one guess per user
+      @correctGuesses.each do |guessMessage|
+        if guessMessage.user.nick == m.user.nick 
+          return false
+        end
+      end
+     
       answer = "#{@quotes[input.to_i][:author]}" 
-
       if answer == @answer 
         @correctGuesses.push m
       end
