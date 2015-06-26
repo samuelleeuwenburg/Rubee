@@ -75,7 +75,7 @@ class Quote
       m.reply "#{sample[:quote]}"
       @answer = sample[:author]
 
-      reply = "#{@answer} was a quote by: "
+      reply = "was a quote by: "
       @quotes.each_with_index do |quote, index|
         reply.concat "#{index}) #{quote[:author]}  "
       end
