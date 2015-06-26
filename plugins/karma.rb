@@ -35,7 +35,7 @@ class Karma
     end
   end
 
-  match(/^karma (\w+\s?)$/i, method: :getKarma, use_prefix: false)
+  match(/^karma (\w+)\s?$/i, method: :getKarma, use_prefix: false)
   def getKarma(m, nick)
     unless nickExists(nick)
       addNick(nick)
