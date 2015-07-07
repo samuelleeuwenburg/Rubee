@@ -78,6 +78,17 @@
         "D:"
       ],
       "odds": 4
+    },
+    {
+      "matches": [
+        "rubee rubee rubee rubee",
+        "rubee, rubee, rubee, rubee,",
+        "ruby ruby ruby ruby",
+        "ruby, ruby, ruby, ruby"
+      ],
+      "responses": [
+        "Ahaa-ahaa-ahaa"
+      ]
     }
   ]
 }
