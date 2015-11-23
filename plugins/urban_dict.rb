@@ -11,8 +11,15 @@ class Dictionary
   def urban_dict(m, query)
     url        = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
     definition = Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')
+    limit = 220
 
-    m.reply query + ': ' + definition[0..220] + '...'
+    unless definition.include? "There aren't any definitions"
+      if definition.length < limit
+        m.reply query + ': ' + definition
+      else
+        m.reply query + ': ' + definition[0..limit] + '...'
+      end
+    end
   end
 end
 
