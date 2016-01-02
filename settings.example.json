@@ -1,7 +1,7 @@
 {
 	"server": "irc.freenode.net",
 	"serverpwd": false,
-	"ssl": true,
+	"ssl": false,
 	"nick": "RubeeTheTester",
 	"password": "",
 	"channels": [

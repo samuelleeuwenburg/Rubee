@@ -1,6 +1,6 @@
 require "cinch"
 require "json"
-require "cleverbot-api"
+require "cleverbot"
 
 class Social
   include Cinch::Plugin
@@ -8,7 +8,7 @@ class Social
   def initialize(*)
     super
 
-    @bot         = CleverBot.new
+    @bot         = Cleverbot::Client.new()
 
     file         = File.read(File.dirname(__FILE__)+"/../settings.json")
     @rubee_data  = JSON.parse(file)
@@ -25,7 +25,7 @@ class Social
   def handle_match(m, message)
     # if random reply is on, reply on anything given the odds
     if @random and rand < @odds
-      reply = @bot.think message.gsub! /#{@nick}/i, ""
+      reply = @bot.write message.gsub! /#{@nick}/i, ""
       m.reply reply
       return true
     end
@@ -54,7 +54,7 @@ class Social
             rand  = Random.rand(matches["responses"].length)
             reply = matches["responses"][rand]
           else
-            reply = @bot.think message.gsub! /#{@nick}/i, ""
+            reply = @bot.write message.gsub! /#{@nick}/i, ""
           end
 
           #prepare reply
@@ -74,7 +74,7 @@ class Social
     # no reply found
     # if it contains our nickname, cleverbot reply anyway
     if message.downcase.include? @nick.downcase
-      reply = @bot.think message.gsub! /#{@nick}/i, ""
+      reply = @bot.write message.gsub! /#{@nick}/i, ""
 
       m.reply reply
     end
