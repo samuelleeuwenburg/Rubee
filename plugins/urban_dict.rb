@@ -15,19 +15,18 @@ class Dictionary
   match(/^shut up(.+)/i, method: :shutUp, use_prefix: false)
   def shutUp(m)
     if message.downcase.include? @nick.downcase
-      niglet = getLastMessage
-      addNiggerString(niglet)
+      addBlacklistString(getLastMessage)
     end
   end
 
-  def isNiggerString?(string)
-    niggers = @DB[:urban_niggerlist]
-    niggers.where(:string => string).one?
+  def isBlacklistString?(string)
+    blacklists = @DB[:urban_blacklist]
+    blacklists.where(:string => string).one?
   end
 
-  def addNiggerString(string)
-    niggers = @DB[:urban_niggerlist]
-    niggers.insert(:string => string)
+  def addBlacklistString(string)
+    blacklists = @DB[:urban_blacklist]
+    blacklists.insert(:string => string)
   end
 
   def getLastMessage
@@ -44,7 +43,7 @@ class Dictionary
   match(/^\.u (.+)/i, method: :urban_dict, use_prefix: false)
   def urban_dict(m, query)
 
-    unless isNiggerString?(query)
+    unless isBlacklistString?(query)
       url        = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
       definition = Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')
       limit = 220
