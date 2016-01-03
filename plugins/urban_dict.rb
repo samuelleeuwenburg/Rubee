@@ -43,19 +43,23 @@ class Dictionary
   match(/^\.u (.+)/i, method: :urban_dict, use_prefix: false)
   def urban_dict(m, query)
 
-    unless isBlacklistString?(query)
-      url        = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
-      definition = Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')
-      limit = 220
-
-      unless definition.include? "There aren't any definitions"
-        if definition.length < limit
-          m.reply query + ': ' + definition
-        else
-          m.reply query + ': ' + definition[0..limit] + '...'
-        end
-        setLastMessage(query)
-      end
+    if isBlacklistString?(query)
+      exit
     end
+
+    url        = "http://www.urbandictionary.com/define.php?term=#{CGI.escape(query)}"
+    definition = Nokogiri::HTML(open(url)).at("div.meaning").text.gsub(/\s+/, ' ')
+    limit = 220
+
+    if definition.include? "There aren't any definitions"
+      exit
+    end
+    
+    if definition.length < limit
+      m.reply query + ': ' + definition
+    else
+      m.reply query + ': ' + definition[0..limit] + '...'
+    end
+    setLastMessage(query)
   end
 end
