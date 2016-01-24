@@ -13,29 +13,29 @@ class Dictionary
     @db = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
   end
 
-  match(/^shut up(.+)/i, method: :shutUp, use_prefix: false)
-  def shutUp(message)
+  match(/^shut up(.+)/i, method: :shut_up, use_prefix: false)
+  def shut_up(message)
     if message.downcase.include? @nick.downcase
-      addBlacklistString(getLastMessage)
+      add_blacklist_string(get_last_message)
     end
   end
 
-  def isBlacklistString?(string)
+  def is_blacklist_string?(string)
     blacklists = @db[:urban_blacklist]
     blacklists.where(:string => string).one?
   end
 
-  def addBlacklistString(string)
+  def add_blacklist_string(string)
     blacklists = @db[:urban_blacklist]
     blacklists.insert(:string => string)
   end
 
-  def getLastMessage
+  def get_last_message
     last = @db[:urban_lastmessage]
     last.first
   end
 
-  def setLastMessage(message)
+  def set_last_message(message)
     last = @db[:urban_lastmessage]
     last.update(:last => last, :message => message)
   end
@@ -44,7 +44,7 @@ class Dictionary
   match(/^\.u (.+)/i, method: :urban_dict, use_prefix: false)
   def urban_dict(m, query)
 
-    if isBlacklistString?(query)
+    if is_blacklist_string?(query)
       exit
     end
 
@@ -61,6 +61,6 @@ class Dictionary
     else
       m.reply query + ': ' + definition[0..limit] + '...'
     end
-    setLastMessage(query)
+    set_last_message(query)
   end
 end
