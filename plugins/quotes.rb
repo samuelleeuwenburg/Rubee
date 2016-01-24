@@ -15,7 +15,7 @@ class Quote
     @results = "5"
     @quotes = []
     @answer = nil
-    @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+    @db = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
 
     @cooldown = 180
     @timer = @cooldown
@@ -141,7 +141,7 @@ class Quote
   end
 
   def addKarma(m)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     nick = m.user.nick
 
     unless nickExists(nick)
@@ -157,19 +157,19 @@ class Quote
   end
 
   def renderKarma(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     n     = nicks.where(:nick => nick.capitalize).first
 
     return "Karma for " + n[:nick] + " = " + n[:karma].to_s
   end
 
   def addNick(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     nicks.insert(:nick => nick.capitalize, :karma => 0)
   end
 
   def nickExists(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     n     = nicks.where(:nick => nick.capitalize).first
 
     if n

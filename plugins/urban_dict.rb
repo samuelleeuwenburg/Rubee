@@ -10,7 +10,7 @@ class Dictionary
   def initialize(*)
     super
 
-    @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+    @db = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
   end
 
   match(/^shut up(.+)/i, method: :shutUp, use_prefix: false)
@@ -21,22 +21,22 @@ class Dictionary
   end
 
   def isBlacklistString?(string)
-    blacklists = @DB[:urban_blacklist]
+    blacklists = @db[:urban_blacklist]
     blacklists.where(:string => string).one?
   end
 
   def addBlacklistString(string)
-    blacklists = @DB[:urban_blacklist]
+    blacklists = @db[:urban_blacklist]
     blacklists.insert(:string => string)
   end
 
   def getLastMessage
-    last = @DB[:urban_lastmessage]
+    last = @db[:urban_lastmessage]
     last.first
   end
 
   def setLastMessage(message)
-    last = @DB[:urban_lastmessage]
+    last = @db[:urban_lastmessage]
     last.update(:last => last, :message => message)
   end
 

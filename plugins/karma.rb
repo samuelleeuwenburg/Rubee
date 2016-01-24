@@ -9,23 +9,23 @@ class Karma
   def initialize(*)
     super
 
-    @DB = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
+    @db = Sequel.sqlite(File.dirname(__FILE__)+"/../rubee.db")
   end
 
   def renderKarma(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     n     = nicks.where(:nick => nick.capitalize).first
 
     return "Karma for " + n[:nick] + " = " + n[:karma].to_s
   end
 
   def addNick(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     nicks.insert(:nick => nick.capitalize, :karma => 0)
   end
 
   def nickExists(nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
     n     = nicks.where(:nick => nick.capitalize).first
 
     if n
@@ -46,7 +46,7 @@ class Karma
 
   match(/^(\w+)\s?\+\+$/i, method: :addKarma, use_prefix: false)
   def addKarma(m, nick)
-    nicks = @DB[:karma]
+    nicks = @db[:karma]
 
     if m.user.to_s.capitalize == nick.capitalize
       return false
@@ -66,7 +66,7 @@ class Karma
 
   match(/^highscore/i, method: :highscore, use_prefix: false)
   def highscore(m)
-    results = @DB['select * from karma ORDER BY karma DESC LIMIT 0, 3']
+    results = @db['select * from karma ORDER BY karma DESC LIMIT 0, 3']
     prefix  = "Karma top 3: "
     losers  = []
 
@@ -79,4 +79,3 @@ class Karma
     m.reply "#{prefix} #{reply}"
   end
 end
-
