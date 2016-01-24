@@ -2,6 +2,7 @@ require 'cinch'
 require 'open-uri'
 require 'nokogiri'
 require 'cgi'
+require "sequel"
 
 class Dictionary
   include Cinch::Plugin
@@ -13,7 +14,7 @@ class Dictionary
   end
 
   match(/^shut up(.+)/i, method: :shutUp, use_prefix: false)
-  def shutUp(m)
+  def shutUp(message)
     if message.downcase.include? @nick.downcase
       addBlacklistString(getLastMessage)
     end
@@ -54,7 +55,7 @@ class Dictionary
     if definition.include? "There aren't any definitions"
       exit
     end
-    
+
     if definition.length < limit
       m.reply query + ': ' + definition
     else
