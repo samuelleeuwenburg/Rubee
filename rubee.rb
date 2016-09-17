@@ -14,9 +14,9 @@ bot = Cinch::Bot.new do
     c.server = rubee_data["server"]
     c.ssl.use = rubee_data["ssl"]
 
-        if rubee_data["serverpwd"]
-            c.password = rubee_data["serverpwd"]
-        end
+    if rubee_data["serverpwd"]
+        c.password = rubee_data["serverpwd"]
+    end
 
     c.channels = rubee_data["channels"]
     c.nick = rubee_data["nick"]
@@ -24,15 +24,7 @@ bot = Cinch::Bot.new do
 
     c.plugins.plugins = [
       Cinch::Plugins::Identify,
-      Karma,
-      Hangman,
-      Quote,
-      TinyURL,
-      Google,
-      Youtube,
-      Dictionary,
-      Social,
-      Highlow
+      Social
     ]
 
     c.plugins.options[Cinch::Plugins::Identify] = {
